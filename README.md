@@ -4,6 +4,8 @@ Private design note for a **???** (upper-class / supervisory host) that sits abo
 
 This repository introduces the host-layer product direction only. It does not document, fork, or expose any existing field project.
 
+**Languages:** [English](README.md) · [??](README.zh-CN.md) · [???????](README.ru.md)
+
 ## Why an upper-class machine
 
 Field boards, FTUs, PLCs, and sensors speak short binary frames on serial or TCP. Operators do not. The upper-class host is the control-room side that:
