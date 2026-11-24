@@ -6,6 +6,22 @@ This repository introduces the host-layer product direction only. It does not do
 
 **Languages:** [English](README.md) · [中文](README.zh-CN.md) · [Русский](README.ru.md)
 
+## Open device prospect (beyond one vertical)
+
+The host is not locked to a single product family. Any board that can keep a session and speak a declared dialect can sit under the same upper-class layer. Early R&D candidates include:
+
+- **Smart meters / energy monitors** — voltage, current, power, demand, breaker state
+- **Environmental nodes** — temperature, humidity, gas, vibration, door/window contacts
+- **Industrial cameras / vision triggers** — event flags + sparse telemetry (not raw video on the OT path)
+- **Actuator / relay modules** — pump, valve, contactor with select-execute-safe command path
+- **Battery / BMS packs** — SOC, SOH, cell alarms, charge inhibit
+- **HVAC / building controllers** — setpoints, mode, fault bits, schedule overrides
+- **4G / Ethernet edge gateways** — concentrate several sensors into one host identity
+- **Lab bring-up PCBs** — new MCU + modem spins used to prove the wire before product tooling
+
+Common rule: **identity in the frame** (or device certificate), not in a DHCP lease. The host owns archive, roles, and UX; the PCB stays thin.
+
+
 ## R&D core: why host ↔ new PCB communication matters
 
 From a research-and-development view, the first hard gate is not the HMI look. It is a **closed loop between the upper-class host and a newly designed PCB**. Until that loop is green, firmware, protocol, and product claims stay unproven.
@@ -36,7 +52,7 @@ From a research-and-development view, the first hard gate is not the HMI look. I
 
 ## Why an upper-class machine
 
-Field boards, FTUs, PLCs, and sensors speak short binary frames on serial or TCP. Operators do not. The upper-class host is the control-room side that:
+Edge boards, meters, PLCs, sensors, gateways, and actuator nodes speak short binary or framed payloads on serial, TCP, or cellular. Operators do not. The upper-class host is the control-room side that:
 
 1. Accepts many concurrent device sessions
 2. Decodes protocol dialects into a stable object model (YX / YC / SOE / commands)
@@ -83,7 +99,7 @@ Python/JS stay useful for tools and UIs. The **core host path** (listen → deco
 ## Target shape (product, not a clone)
 
 ```
-[ Field PCB / FTU ] --TCP--> [ Upper-Class Host ]
+[ New IoT PCB / edge node ] --TCP--> [ Upper-Class Host ]
                                 |-- session + dialect auto-detect
                                 |-- archive / realtime store
                                 |-- auth + roles
