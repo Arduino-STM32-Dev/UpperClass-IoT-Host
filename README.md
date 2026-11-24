@@ -6,6 +6,34 @@ This repository introduces the host-layer product direction only. It does not do
 
 **Languages:** [English](README.md) · [中文](README.zh-CN.md) · [Русский](README.ru.md)
 
+## R&D core: why host ↔ new PCB communication matters
+
+From a research-and-development view, the first hard gate is not the HMI look. It is a **closed loop between the upper-class host and a newly designed PCB**. Until that loop is green, firmware, protocol, and product claims stay unproven.
+
+**Meaning of establishing communication**
+
+1. **Proof of the protocol contract** — The board is not "online" because TCP connected. It is online when frames with agreed start bytes, address (`A` + `CA`), checksum, and TI map are accepted by the host decoder.
+2. **Decouple hardware bring-up from cloud demos** — Early PCB spin must talk to *our* host, not a vendor MQTT toy. That keeps dialect, point table, and command semantics under R&D control.
+3. **Make identity durable** — 4G IP changes; link/common address does not. Host registration is how a new board becomes a named asset in the lab and later in the field.
+4. **Create a regression surface** — Once the host accepts the board, every firmware change can be scored: handshake time, GI complete, YX/YC non-zero, SOE timestamp, heartbeat hold.
+5. **Unlock the rest of the stack** — Archive, alarm, web API, mobile view, and remote control are worthless until the wire path is real.
+
+**What becomes possible after communication succeeds**
+
+| Capability | R&D outcome |
+|---|---|
+| Link init + dialect detect | Confirm balanced / standard 101 (or custom) path on this PCB revision |
+| General interrogation (GI) | Full YX/YC snapshot validates point map and ADC/IO wiring |
+| COS / SOE | Prove event path and clock quality for protection-style signals |
+| Clock sync / read | Align board time so SOE is forensic-grade |
+| Select → execute → terminate | Safe remote command path for switch objects on the new board |
+| Heartbeat / reconnect | Measure hold time, drop rate, and recovery under NAT and 4G |
+| Persist + API | Same session feeds archive and ops UI without a second protocol |
+| Multi-board soak | Parallel sessions expose race, buffer, and address-collision bugs early |
+
+**R&D stop condition for a PCB spin:** host list shows this board as online with correct dialect; GI fills non-empty YC/YX; at least one COS/SOE round-trip; command path dry-run OK; session holds through heartbeat. Only then does the board leave "lab wire" and enter product integration.
+
+
 ## Why an upper-class machine
 
 Field boards, FTUs, PLCs, and sensors speak short binary frames on serial or TCP. Operators do not. The upper-class host is the control-room side that:
