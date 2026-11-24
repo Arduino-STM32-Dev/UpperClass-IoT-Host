@@ -1,10 +1,10 @@
 # Upper-Class Host Machine for Industrial IoT
 
-Private design note for a **???** (upper-class / supervisory host) that sits above field devices and turns raw OT signals into operable plant data.
+Private design note for a **上位机** (upper-class / supervisory host) that sits above field devices and turns raw OT signals into operable plant data.
 
 This repository introduces the host-layer product direction only. It does not document, fork, or expose any existing field project.
 
-**Languages:** [English](README.md) � [??](README.zh-CN.md) � [???????](README.ru.md)
+**Languages:** [English](README.md) · [中文](README.zh-CN.md) · [Русский](README.ru.md)
 
 ## Why an upper-class machine
 
@@ -14,7 +14,7 @@ Field boards, FTUs, PLCs, and sensors speak short binary frames on serial or TCP
 2. Decodes protocol dialects into a stable object model (YX / YC / SOE / commands)
 3. Stores history, alarms, and identity (link address, common address, asset tag)
 4. Serves HMI / API / mobile views without putting databases on every board
-5. Enforces auth, audit, and safe command paths (select ? execute ? terminate)
+5. Enforces auth, audit, and safe command paths (select → execute → terminate)
 
 Without this layer, each PCB ships a one-off cloud demo (MQTT JSON, vendor portal). That does not scale across vendors, NAT, or 4G address churn. Identity must live in the frame (`A` + `CA`), not in a transient IP.
 
@@ -44,13 +44,13 @@ The host is the place where OT protocol fidelity and IT delivery meet. Boards st
 
 **Summary of advantages**
 
-1. **One stack, many surfaces** � collector daemon, HTTP mid-layer, desktop monitor, test simulator share models and libraries.
-2. **Performance enough for OT** � modern .NET is competitive with Go/Java for socket servers; GC is tunable; native AOT optional later.
-3. **Safety vs scripting-only** � nullability, static analysis, and typed protocol frames reduce silent wire bugs that PowerShell/Python prototypes miss.
-4. **Plant-friendly ops** � most industrial Windows boxes already run .NET-capable hosts; installers and services are familiar to electric ops teams.
-5. **Hiring and longevity** � C# / .NET remains a mainstream enterprise language with LTS releases and clear upgrade paths.
+1. **One stack, many surfaces** — collector daemon, HTTP mid-layer, desktop monitor, test simulator share models and libraries.
+2. **Performance enough for OT** — modern .NET is competitive with Go/Java for socket servers; GC is tunable; native AOT optional later.
+3. **Safety vs scripting-only** — nullability, static analysis, and typed protocol frames reduce silent wire bugs that PowerShell/Python prototypes miss.
+4. **Plant-friendly ops** — most industrial Windows boxes already run .NET-capable hosts; installers and services are familiar to electric ops teams.
+5. **Hiring and longevity** — C# / .NET remains a mainstream enterprise language with LTS releases and clear upgrade paths.
 
-Python/JS stay useful for tools and UIs. The **core host path** (listen ? decode ? persist ? command) stays C# so invariants live in one compiled place.
+Python/JS stay useful for tools and UIs. The **core host path** (listen → decode → persist → command) stays C# so invariants live in one compiled place.
 
 ## Target shape (product, not a clone)
 
