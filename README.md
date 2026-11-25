@@ -112,6 +112,11 @@ Non-goals for this intro repo:
 - No vendor credentials, VPN accounts, or live endpoints
 - No claim that any third-party cloud MQTT demo replaces the host
 
+
+## Code preview: simple listener
+
+See [host-listener/](host-listener/) (default TCP **9800**). Docs: [中文](host-listener/README.md) · [English](host-listener/README.en.md) · [Русский](host-listener/README.ru.md).
+
 ## Status
 
 Private. Design brief only. Implementation follows in separate private packages under the same org.

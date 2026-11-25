@@ -112,6 +112,11 @@ Python / JS 仍适合工具与部分 UI。**核心主机路径**（监听 → �
 - 不含厂商凭据、VPN 账号或线上地址
 - 不主张第三方云 MQTT 演示可替代上位机
 
+
+## 代码预览：简易监听
+
+见目录 [host-listener/](host-listener/)（默认 TCP **9800**）。说明：[中文](host-listener/README.md) · [English](host-listener/README.en.md) · [Русский](host-listener/README.ru.md)。
+
 ## 状态
 
 私有仓库。仅设计简报。实现将在同一组织下的其他私有包中推进。
